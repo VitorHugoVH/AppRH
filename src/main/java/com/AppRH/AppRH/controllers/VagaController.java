@@ -1,5 +1,6 @@
 package com.AppRH.AppRH.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,10 @@ import jakarta.validation.Valid;
 @Controller
 public class VagaController {
 
+	@Autowired
 	private VagaRepository vr;
+	
+	@Autowired
 	private CandidatoRepository cr;
 
 	// CADASTRA VAGA
@@ -71,6 +75,8 @@ public class VagaController {
 		return "redirect:/vagas";
 	}
 
+	// ADICIONAR CANDIDATO
+	@RequestMapping(value = "/{codigo}", method = RequestMethod.POST)
 	public String detalhesVagaPost(@PathVariable("codigo") long codigo, @Valid Candidato candidato,
 			BindingResult result, RedirectAttributes attributes) {
 		
@@ -81,7 +87,7 @@ public class VagaController {
 		
 		// rg duplicado
 		if(cr.findByRg(candidato.getRg()) != null) {
-			attributes.addFlashAttribute("mensagem erro", "RG duplicado");
+			attributes.addFlashAttribute("mensagem_erro", "RG duplicado");
 			return "redirect:/{codigo}";
 		}
 		
@@ -89,7 +95,7 @@ public class VagaController {
 		candidato.setVaga(vaga);
 		cr.save(candidato);
 		attributes.addFlashAttribute("mensagem", "Candidato adicionado com sucesso!");
-		return "redirect/{codigo}";
+		return "redirect:/{codigo}";
 	}
 	
 	// DELETA CANDIDATO PELO RG

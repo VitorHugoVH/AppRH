@@ -82,6 +82,4 @@ public class Vaga implements Serializable {
 	public void setCandidatos(List<Candidato> candidatos) {
 		this.candidatos = candidatos;
 	}
-    
-    
 }
